@@ -6,9 +6,6 @@ import com.saurabh.example.restful.restfulwebservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +15,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 @RestController
 public class UserResource {
@@ -35,7 +35,7 @@ public class UserResource {
 
     //retriveUser
     //GET /users/{userId}
-    @GetMapping("/users/{userId}")
+    @GetMapping(value = "/users/{userId}")
     public EntityModel<User> UserById(@PathVariable("userId") Integer userId){
         User foundUser=userService.findOne(userId);
         EntityModel userEntityModel=EntityModel.of(foundUser);

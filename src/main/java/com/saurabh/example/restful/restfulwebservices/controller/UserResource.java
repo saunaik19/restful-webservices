@@ -4,6 +4,11 @@ import com.saurabh.example.restful.restfulwebservices.dto.User;
 import com.saurabh.example.restful.restfulwebservices.exceptions.UserNotFoundException;
 import com.saurabh.example.restful.restfulwebservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +36,17 @@ public class UserResource {
     //retriveUser
     //GET /users/{userId}
     @GetMapping("/users/{userId}")
-    public ResponseEntity<User> UserByName(@PathVariable("userId") Integer userId){
+    public EntityModel<User> UserById(@PathVariable("userId") Integer userId){
         User foundUser=userService.findOne(userId);
-        return new ResponseEntity<>(foundUser,HttpStatus.OK);
+        EntityModel userEntityModel=EntityModel.of(foundUser);
+
+        WebMvcLinkBuilder linkToUsers=WebMvcLinkBuilder.linkTo(methodOn(this.getClass()).allUsers());
+        WebMvcLinkBuilder linkToAddUser=WebMvcLinkBuilder.linkTo(methodOn(this.getClass()).saveUser(foundUser));
+
+        userEntityModel.add(linkToUsers.withRel("all-users"));
+        userEntityModel.add(linkToUsers.withRel("addUser"));
+
+        return userEntityModel;
     }
 
     //Save user

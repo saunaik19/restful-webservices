@@ -1,6 +1,7 @@
 package com.saurabh.example.restful.restfulwebservices.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Getter
 @Setter
 @Builder
-@JsonIgnoreProperties(value = {"value1","value2"})//to ignore multiple properties from json response
+//@JsonIgnoreProperties(value = {"value1","value2"})//to ignore multiple properties from json response
+@JsonFilter("CustomBeanFilter")
 public class CustomBean {
     private String value1;
     private String value2;
